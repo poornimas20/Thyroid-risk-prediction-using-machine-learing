@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>History | ThyroAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--primary:#0d9488;--secondary:#0891b2;--danger:#dc2626;--warn:#d97706;--safe:#16a34a;--bg:#f8fafc;--border:#e2e8f0;--muted:#64748b;--text:#0f172a}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    .wrap{min-height:100vh;display:flex;flex-direction:column}
+    nav{background:#ffffff;border-bottom:1px solid var(--border);padding:.85rem 0;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    .brand{font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;color:var(--primary)}
+    .glass{background:#ffffff;border:1px solid var(--border);border-radius:16px;padding:1.6rem;box-shadow:0 1px 3px rgba(15,23,42,.05)}
+    .htable{color:var(--text);font-size:.83rem;--bs-table-bg:transparent;--bs-table-striped-bg:#f8fafc}
+    .htable thead th{color:var(--muted);font-weight:600;font-size:.73rem;text-transform:uppercase;border-bottom:1px solid var(--border)}
+    .htable td{border-bottom:1px solid var(--border);vertical-align:middle}
+    .badge-high{background:rgba(220,38,38,.1);color:var(--danger);padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600}
+    .badge-medium{background:rgba(217,119,6,.1);color:var(--warn);padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600}
+    .badge-no{background:rgba(22,163,74,.1);color:var(--safe);padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600}
+    .btn-back{background:#f8fafc;border:1px solid var(--border);border-radius:9px;padding:.5rem 1rem;font-size:.83rem;color:#334155;text-decoration:none;transition:all .2s}
+    .btn-back:hover{background:rgba(13,148,136,.06);color:var(--primary);border-color:var(--primary)}
+    footer{border-top:1px solid var(--border);padding:1rem 0;text-align:center;font-size:.73rem;color:var(--muted);margin-top:auto;background:#fff}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="container d-flex align-items-center justify-content-between">
+      <span class="brand"><i class="bi bi-activity me-2"></i>ThyroAI</span>
+      <div class="d-flex align-items-center gap-3">
+        <a href="/" class="nav-link" style="color:var(--muted)!important;font-size:.83rem;text-decoration:none"><i class="bi bi-house me-1"></i>Home</a>
+        <a href="/analytics" class="nav-link" style="color:var(--muted)!important;font-size:.83rem;text-decoration:none"><i class="bi bi-graph-up-arrow me-1"></i>Analytics</a>
+        <a href="/logout" class="nav-link" style="color:var(--muted)!important;font-size:.83rem;text-decoration:none"><i class="bi bi-box-arrow-right me-1"></i>Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div class="glass">
+      <div style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:1.1rem">
+        <i class="bi bi-clock-history me-2" style="color:var(--primary)"></i>Recent Predictions (Last 20)
+      </div>
+      {% if rows %}
+      <div class="table-responsive">
+        <table class="table htable table-striped">
+          <thead><tr>
+            <th>#</th> <th>Timestamp</th><th>Patient</th><th>Age</th><th>Sex</th><th>TSH</th><th>Diagnosis</th><th>Risk Level</th><th>PDF</th>
+          </tr></thead>
+          <tbody>
+          {% for row in rows %}
+          <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+            <td>
+              {% if row[7] == 'High Risk' %}
+                <span class="badge-high">High Risk</span>
+              {% elif row[7] == 'Medium Risk' %}
+                <span class="badge-medium">Medium Risk</span>
+              {% else %}
+                <span class="badge-no">No Risk</span>
+              {% endif %}
+            </td>
+            <td><a href="/report/{{ row[0] }}" style="color:var(--primary);font-size:.8rem"><i class="bi bi-download"></i> PDF</a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p style="color:var(--muted);font-size:.87rem">No predictions yet. <a href="/" style="color:var(--primary)">Run an assessment →</a></p>
+      {% endif %}
+    </div>
+  </main>
+
+  <footer>
+    <div class="container"><i class="bi bi-activity me-1"></i>ThyroAI — prediction history</div>
+  </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

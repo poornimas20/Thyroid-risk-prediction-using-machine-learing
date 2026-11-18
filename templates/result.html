@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Result | ThyroAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--primary:#0d9488;--secondary:#0891b2;--danger:#dc2626;--warn:#d97706;--safe:#16a34a;--bg:#f8fafc;--border:#e2e8f0;--muted:#64748b;--text:#0f172a}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;margin:0}
+    .wrap{min-height:100vh;display:flex;flex-direction:column}
+    nav{background:#ffffff;border-bottom:1px solid var(--border);padding:.85rem 0;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    .brand{font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;color:var(--primary)}
+    .glass{background:#ffffff;border:1px solid var(--border);border-radius:16px;padding:1.6rem;box-shadow:0 1px 3px rgba(15,23,42,.05)}
+    /* Risk variants */
+    .risk-high .r-icon{background:rgba(220,38,38,.1);color:var(--danger);box-shadow:0 8px 24px rgba(220,38,38,.15)}
+    .risk-medium .r-icon{background:rgba(217,119,6,.1);color:var(--warn);box-shadow:0 8px 24px rgba(217,119,6,.15)}
+    .risk-no .r-icon{background:rgba(22,163,74,.1);color:var(--safe);box-shadow:0 8px 24px rgba(22,163,74,.15)}
+    .r-icon{width:78px;height:78px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:2.1rem;margin-bottom:.9rem}
+    .risk-high .r-badge{background:rgba(220,38,38,.1);color:var(--danger)}
+    .risk-medium .r-badge{background:rgba(217,119,6,.1);color:var(--warn)}
+    .risk-no .r-badge{background:rgba(22,163,74,.1);color:var(--safe)}
+    .r-badge{font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 12px;border-radius:50px;display:inline-block;margin-bottom:.5rem}
+    .risk-high .r-val{color:var(--danger)}
+    .risk-medium .r-val{color:var(--warn)}
+    .risk-no .r-val{color:var(--safe)}
+    .r-val{font-family:'Outfit',sans-serif;font-size:1.9rem;font-weight:700;line-height:1.15;margin-bottom:.15rem}
+    .r-risk-level{font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:600;margin-bottom:.4rem}
+    .patient-tag{font-size:.78rem;color:var(--muted);margin-bottom:.6rem}
+    /* Prob bars */
+    .bar-bg{background:#f1f5f9;border-radius:6px;height:8px;overflow:hidden}
+    .bar-fill{height:100%;border-radius:6px;transition:width 1s ease}
+    .bar-hyper{background:#dc2626}.bar-hypo{background:#d97706}.bar-normal{background:#16a34a}
+    .divider{border:none;border-top:1px solid var(--border);margin:1.1rem 0}
+    /* Advice */
+    .risk-high .advice{background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.15)}
+    .risk-medium .advice{background:rgba(217,119,6,.05);border:1px solid rgba(217,119,6,.15)}
+    .risk-no .advice{background:rgba(22,163,74,.05);border:1px solid rgba(22,163,74,.15)}
+    .advice{border-radius:10px;padding:.85rem 1rem;display:flex;gap:10px;align-items:flex-start}
+    .advice p{font-size:.81rem;color:#334155;margin:0;line-height:1.6}
+    /* Buttons */
+    .btn-dl{background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;border-radius:10px;padding:.7rem 1rem;font-family:'Outfit',sans-serif;font-weight:600;font-size:.85rem;color:#fff;text-decoration:none;display:block;text-align:center;transition:transform .2s}
+    .btn-dl:hover{transform:translateY(-1px);color:#fff}
+    .btn-back{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:.65rem 1rem;font-family:'Outfit',sans-serif;font-weight:600;font-size:.83rem;color:#334155;text-decoration:none;display:block;text-align:center;transition:all .2s}
+    .btn-back:hover{background:rgba(13,148,136,.06);color:var(--primary);border-color:var(--primary)}
+    footer{border-top:1px solid var(--border);padding:1rem 0;text-align:center;font-size:.73rem;color:var(--muted);margin-top:auto;background:#fff}
+    .pop-in{animation:pi .5s cubic-bezier(0.34,1.56,0.64,1) both}
+    @keyframes pi{from{opacity:0;transform:scale(.88) translateY(14px)}to{opacity:1;transform:none}}
+    .nav-link-s{color:var(--muted);font-size:.83rem;text-decoration:none}
+    .nav-link-s:hover{color:var(--primary)}
+    .info-stat{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:.45rem .75rem}
+    .info-stat .lbl{font-size:.67rem;color:var(--muted)}
+    .info-stat .val{font-size:.92rem;font-weight:600;color:var(--text)}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="container d-flex align-items-center justify-content-between">
+      <span class="brand"><i class="bi bi-activity me-2"></i>ThyroAI</span>
+      <div class="d-flex gap-3">
+        <a href="/history" class="nav-link-s"><i class="bi bi-clock-history me-1"></i>History</a>
+        <a href="/analytics" class="nav-link-s"><i class="bi bi-graph-up-arrow me-1"></i>Analytics</a>
+        <a href="/logout" class="nav-link-s"><i class="bi bi-box-arrow-right me-1"></i>Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  {% if risk_level == 'High Risk' %}
+    {% set cls = 'risk-high' %}
+    {% set icon = 'bi-exclamation-octagon-fill' %}
+  {% elif risk_level == 'Medium Risk' %}
+    {% set cls = 'risk-medium' %}
+    {% set icon = 'bi-exclamation-triangle-fill' %}
+  {% else %}
+    {% set cls = 'risk-no' %}
+    {% set icon = 'bi-shield-check-fill' %}
+  {% endif %}
+
+  <main class="container py-4">
+    <div class="row g-4 justify-content-center">
+
+      <!-- RESULT CARD -->
+      <div class="col-lg-5">
+        <div class="glass {{ cls }} text-center pop-in">
+          <div class="r-icon"><i class="bi {{ icon }}"></i></div>
+          <div class="patient-tag"><i class="bi bi-person me-1"></i>{{ patient_name }}</div>
+          <div class="r-badge">Predicted Diagnosis</div>
+          <div class="r-val">{{ diagnosis }}</div>
+          <div class="r-risk-level">{{ risk_level }}</div>
+          <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem">
+            {% if diagnosis == 'Hyperthyroid' %}
+              Clinical and/or lifestyle indicators suggest possible hyperthyroidism (overactive thyroid).
+            {% elif diagnosis == 'Hypothyroid' %}
+              Clinical and/or lifestyle indicators suggest possible hypothyroidism (underactive thyroid).
+            {% else %}
+              Indicators are within the normal range.
+            {% endif %}
+          </p>
+
+          <hr class="divider"/>
+
+          <div class="advice mb-3">
+            <span style="font-size:1.1rem;flex-shrink:0;margin-top:1px">
+              {% if diagnosis == 'Normal' %}<i class="bi bi-check-circle-fill" style="color:var(--safe)"></i>
+              {% else %}<i class="bi bi-heart-pulse-fill" style="color:var(--danger)"></i>{% endif %}
+            </span>
+            <p>
+              {% if diagnosis == 'Hyperthyroid' %}
+                Consult an endocrinologist for a full thyroid panel (TSH, T3, T4).
+                Hyperthyroidism is treatable, but early diagnosis matters.
+              {% elif diagnosis == 'Hypothyroid' %}
+                Consult an endocrinologist for a full thyroid panel (TSH, T3, T4).
+                Early treatment with thyroid hormone replacement prevents complications.
+              {% else %}
+                Thyroid hormone levels and lifestyle indicators appear healthy.
+                Continue regular exercise, maintain sleep hygiene, and manage stress.
+              {% endif %}
+            </p>
+          </div>
+
+          <div class="d-flex flex-column gap-2">
+            <a href="/report/{{ pred_id }}" class="btn-dl"><i class="bi bi-download me-2"></i>Download PDF Report</a>
+            <a href="/" class="btn-back"><i class="bi bi-arrow-left me-2"></i>New Assessment</a>
+          </div>
+          <p class="mt-3" style="font-size:.68rem;color:var(--muted)">
+            <i class="bi bi-info-circle me-1"></i>Model: {{ best_model }} · Record #{{ pred_id }} · Not a medical diagnosis
+          </p>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="col-lg-5">
+        <div class="glass">
+          <div style="font-family:'Outfit',sans-serif;font-weight:600;font-size:.92rem;color:var(--text);margin-bottom:.8rem">
+            <i class="bi bi-clipboard2-data me-2" style="color:var(--secondary)"></i>Your Input Summary
+          </div>
+          <div class="row g-2">
+            {% for lbl, val, unit in [
+              ('TSH', values.TSH, 'mIU/L'),
+              ('T3',  values.T3,  'nmol/L'),
+              ('T4', values.T4, 'nmol/L'),
+              ('Age', values.age, 'yrs'),
+              ('Sleep', values.sleep_hours, 'hrs/night'),
+              ('Stress', values.stress_level, '')
+            ] %}
+            <div class="col-6">
+              <div class="info-stat">
+                <div class="lbl">{{ lbl }}</div>
+                <div class="val">{{ val }}<span style="font-size:.68rem;color:var(--muted);margin-left:3px">{{ unit }}</span></div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="mt-3">
+            <a href="/history" class="btn-back"><i class="bi bi-clock-history me-2"></i>View All Predictions</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container"><i class="bi bi-activity me-1"></i>ThyroAI — AI Screening Only · Not a Medical Device</div>
+  </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

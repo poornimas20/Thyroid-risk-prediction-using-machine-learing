@@ -1,0 +1,12 @@
+{
+  "stress_level": {
+    "Low": 1,
+    "Medium": 2,
+    "High": 3
+  },
+  "exercise_frequency": {
+    "Daily": 3,
+    "Weekly": 2,
+    "Never": 1
+  }
+}

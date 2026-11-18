@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ThyroAI – Thyroid Disorder Screening</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--primary:#0d9488;--secondary:#0891b2;--accent:#0d9488;--danger:#dc2626;--warn:#d97706;--bg:#f8fafc;--card:#ffffff;--border:#e2e8f0;--muted:#64748b;--text:#0f172a}
+    *{box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;margin:0}
+    .wrap{min-height:100vh;display:flex;flex-direction:column}
+    nav{background:#ffffff;border-bottom:1px solid var(--border);padding:.85rem 0;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    .brand{font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;color:var(--primary)}
+    .nav-link{color:var(--muted)!important;font-size:.83rem;text-decoration:none;transition:color .2s}
+    .nav-link:hover{color:var(--primary)!important}
+    .nav-pill{font-size:.65rem;background:rgba(13,148,136,.1);padding:2px 9px;border-radius:20px;color:var(--primary);font-weight:600;border:1px solid rgba(13,148,136,.2)}
+    .hero{padding:2.2rem 0 1.2rem;text-align:center}
+    .hero-icon{width:66px;height:66px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:18px;display:inline-flex;align-items:center;justify-content:center;font-size:1.9rem;margin-bottom:.9rem;color:#fff;box-shadow:0 8px 24px rgba(13,148,136,.25)}
+    .hero h1{font-family:'Outfit',sans-serif;font-size:clamp(1.6rem,4vw,2.3rem);font-weight:700;color:var(--text);margin-bottom:.4rem}
+    .hero p{color:var(--muted);font-size:.92rem;max-width:520px;margin:0 auto .6rem}
+    .chip{display:inline-flex;align-items:center;gap:5px;background:#f1f5f9;border:1px solid var(--border);border-radius:50px;padding:3px 11px;font-size:.73rem;color:var(--muted)}
+    .chip i{color:var(--primary)}
+    .glass{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;box-shadow:0 1px 3px rgba(15,23,42,.05)}
+    .sec-head{display:flex;align-items:center;gap:9px;margin-bottom:1.1rem;padding-bottom:.65rem;border-bottom:1px solid var(--border)}
+    .sec-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+    .si-blue{background:rgba(8,145,178,.1);color:var(--secondary)}
+    .si-purple{background:rgba(13,148,136,.1);color:var(--primary)}
+    .si-green{background:rgba(13,148,136,.1);color:var(--primary)}
+    .si-red{background:rgba(220,38,38,.1);color:var(--danger)}
+    .sec-title{font-family:'Outfit',sans-serif;font-weight:600;font-size:.92rem;color:var(--text);margin:0}
+    .sec-sub{font-size:.72rem;color:var(--muted);margin:0}
+    label.lbl{font-size:.78rem;font-weight:500;color:#334155;margin-bottom:4px;display:block}
+    .inp{background:#fff;border:1px solid var(--border);border-radius:8px;color:var(--text);padding:.55rem .85rem;font-size:.86rem;width:100%;transition:border-color .25s,box-shadow .25s}
+    .inp:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,148,136,.12)}
+    .inp::placeholder{color:#94a3b8}
+    select.inp option{background:#fff;color:var(--text)}
+    .hint{font-size:.67rem;color:var(--muted);margin-top:2px}
+    .ref{font-size:.67rem;padding:1px 7px;border-radius:20px;background:rgba(13,148,136,.1);color:var(--primary);border:1px solid rgba(13,148,136,.2)}
+    .btn-run{background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;border-radius:11px;padding:.8rem 2rem;font-family:'Outfit',sans-serif;font-weight:600;font-size:.93rem;color:#fff;width:100%;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 16px rgba(13,148,136,.3)}
+    .btn-run:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(13,148,136,.4)}
+    footer{border-top:1px solid var(--border);padding:1rem 0;text-align:center;font-size:.73rem;color:var(--muted);margin-top:auto;background:#fff}
+    .fade-up{opacity:0;transform:translateY(16px);animation:fu .5s ease forwards}
+    @keyframes fu{to{opacity:1;transform:none}}
+    .d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.28s}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <div class="container d-flex align-items-center justify-content-between">
+      <span class="brand"><i class="bi bi-activity me-2"></i>ThyroAI</span>
+      <div class="d-flex align-items-center gap-3">
+        <a href="/history" class="nav-link"><i class="bi bi-clock-history me-1"></i>History</a>
+        <a href="/analytics" class="nav-link"><i class="bi bi-graph-up-arrow me-1"></i>Analytics</a>
+        <span class="nav-pill">Real UCI Data · 7,674 patients</span>
+        <a href="/logout" class="nav-link"><i class="bi bi-box-arrow-right me-1"></i>Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero container fade-up">
+    <div class="hero-icon"><i class="bi bi-heart-pulse-fill"></i></div>
+    <h1>Thyroid Disorder Screening</h1>
+    <p>Enter clinical and lifestyle parameters to screen for hypothyroidism or hyperthyroidism.</p>
+    <div class="d-flex justify-content-center gap-2 flex-wrap">
+      <span class="chip"><i class="bi bi-shield-check"></i> Real UCI thyroid dataset</span>
+      <span class="chip"><i class="bi bi-cpu"></i> 3-class diagnosis model</span>
+      <span class="chip"><i class="bi bi-database"></i> SQLite logged</span>
+    </div>
+  </div>
+
+  <main class="container pb-5">
+    <form action="/predict" method="post" id="form">
+      <div class="row g-4">
+
+        <div class="col-lg-6 fade-up d1">
+          <div class="glass">
+
+            <div class="sec-head">
+              <div class="sec-icon si-purple"><i class="bi bi-person-fill"></i></div>
+              <div><p class="sec-title">Patient</p><p class="sec-sub"></p></div>
+            </div>
+            <div class="row g-3 mb-4">
+              <div class="col-12">
+                <label class="lbl">Patient Name</label>
+                <input type="text" name="patient_name" class="inp" placeholder="e.g. Jane Doe" maxlength="80"/>
+                <div class="hint"></div>
+              </div>
+            </div>
+
+            <div class="sec-head">
+              <div class="sec-icon si-blue"><i class="bi bi-droplet-fill"></i></div>
+              <div><p class="sec-title">Clinical Parameters</p><p class="sec-sub">Most predictive — from real blood tests</p></div>
+            </div>
+            <div class="row g-3 mb-4">
+              <div class="col-sm-6">
+                <label class="lbl">Age</label>
+                <input type="number" name="age" class="inp" placeholder="e.g. 42" min="1" max="110" required/>
+              </div>
+              <div class="col-sm-6">
+                <label class="lbl">Sex</label>
+                <select name="sex" class="inp" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="F">Female</option>
+                  <option value="M">Male</option>
+                </select>
+              </div>
+              <div class="col-sm-4">
+                <label class="lbl">TSH (mIU/L)</label>
+                <input type="number" step="0.001" name="TSH" class="inp" placeholder="e.g. 2.5" min="0" required/>
+                <div class="hint">Normal: <span class="ref">0.5 – 4.5</span></div>
+              </div>
+              <div class="col-sm-4">
+                <label class="lbl">T3 (nmol/L)</label>
+                <input type="number" step="0.01" name="T3" class="inp" placeholder="e.g. 1.8" min="0" required/>
+                <div class="hint">Normal: <span class="ref">1.1 – 2.5</span></div>
+              </div>
+              <div class="col-sm-4">
+                <label class="lbl">T4 (nmol/L)</label>
+                <input type="number" step="0.1" name="T4" class="inp" placeholder="e.g. 95" min="0" required/>
+                <div class="hint">Normal: <span class="ref">60 – 150</span></div>
+              </div>
+            </div>
+
+            <div class="sec-head">
+              <div class="sec-icon si-red"><i class="bi bi-clipboard2-pulse-fill"></i></div>
+              <div><p class="sec-title">Symptom</p><p class="sec-sub">Common thyroid-disorder symptom</p></div>
+            </div>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="lbl"> Weight Gain</label>
+                <select name="weight_gain" class="inp" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-lg-6 fade-up d2">
+          <div class="glass">
+
+            <div class="sec-head">
+              <div class="sec-icon si-green"><i class="bi bi-heart-fill"></i></div>
+              <div><p class="sec-title">Lifestyle Factors</p><p class="sec-sub">Modifiable risk factors</p></div>
+            </div>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label class="lbl">Sleep Hours / night</label>
+                <input type="number" name="sleep_hours" class="inp" placeholder="e.g. 7" min="1" max="24" required/>
+                <div class="hint">Recommended: <span class="ref">7 – 9</span></div>
+              </div>
+              <div class="col-sm-6">
+                <label class="lbl">Stress Level</label>
+                <select name="stress_level" class="inp" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="lbl">Exercise Frequency</label>
+                <select name="exercise_frequency" class="inp" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="Never">Never / Sedentary</option>
+                  <option value="Weekly">Weekly (1–4×/week)</option>
+                  <option value="Daily">Daily (5+×/week)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mt-4 p-3 rounded-3" style="background:rgba(13,148,136,.06);border:1px solid rgba(13,148,136,.15)">
+              <p style="font-size:.74rem;color:var(--muted);margin:0">
+                <i class="bi bi-info-circle-fill me-1" style="color:var(--primary)"></i>
+                <b>TSH is the strongest predictor.</b> Elevated TSH often indicates hypothyroidism,
+                while suppressed TSH often indicates hyperthyroidism. Lifestyle factors add
+                secondary context. This tool is a <b>screening aid only</b> — not a medical diagnosis.
+              </p>
+            </div>
+
+            <div class="mt-3 p-3 rounded-3" style="background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.15)">
+              <p style="font-size:.74rem;color:var(--muted);margin:0">
+                <i class="bi bi-exclamation-triangle-fill me-1" style="color:var(--danger)"></i>
+                <b>Always confirm with a clinician.</b> This screening tool can miss or
+                misclassify cases, especially rarer hyperthyroid presentations.
+                Always follow up with a physician for a full blood panel.
+              </p>
+            </div>
+
+            <div class="mt-4">
+              <button type="submit" class="btn-run" id="submitBtn">
+                <span id="btn-text"><i class="bi bi-cpu-fill me-2"></i>Run Screening</span>
+                <span id="btn-load" class="d-none">
+                  <span class="spinner-border spinner-border-sm me-2"></span>Analysing…
+                </span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    <div class="container"><i class="bi bi-activity me-1"></i>ThyroAI — AI Screening Only · Not a Medical Device</div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.getElementById('form').addEventListener('submit', () => {
+    document.getElementById('btn-text').classList.add('d-none');
+    document.getElementById('btn-load').classList.remove('d-none');
+  });
+</script>
+</body>
+</html>
